@@ -14,7 +14,10 @@ exports.postLogin = (req, res, next) => {
 		.then(user => {
 			req.session.isLoggedIn = true;
 			req.session.user = user;
-			res.redirect("/");
+			//use save to wait until session is save to the database, then redirect
+			res.session.save(() => {
+				res.redirect("/");
+			});
 		})
 		.catch(err => console.log(err));
 };
